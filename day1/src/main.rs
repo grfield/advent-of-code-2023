@@ -9,7 +9,7 @@ fn main() {
 fn calculate_sum_from_codes(input: &str, include_words: bool) -> u32 {
     input.lines()
         .map(|l| { number_from_first_and_last_digit(l, include_words)})
-        .reduce(|a, b| a + b).unwrap()
+        .sum::<u32>()
 }
 
 fn find_token_match(s: &str) -> Option<&str> {
