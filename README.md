@@ -10,4 +10,4 @@ My solutions to Advent of Code 2023 in Rust when it all kicks off on December 1
 | 3a  |           |
 | 3b  |           |
 | 4a  | Yes       |
-| 4b  |           |
+| 4b  | Yes       |
