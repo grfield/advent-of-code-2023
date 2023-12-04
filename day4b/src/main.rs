@@ -1,52 +1,60 @@
+#[derive(Debug)]
 struct Card {
-    winning_nums: Vec<u32>,
-    entry: Vec<u32>
+    matches: u32,
+    count: u32
 }
 
 fn main() {
     let input_data = include_str!("input_data.txt");
-    println!("Day 4a answer: {}", winning_score_for_cards(input_data));
+    println!("Day 4a answer: {} scratch cards", total_scratchcards(input_data));
 }
 
 fn parse_card(card: &str) -> Card {
     let data: Vec<_> = card.split(&[':', '|']).collect();
-    let winning: Vec<u32> = data[1].split(' ')
-        .filter(|s| !s.is_empty())
-        .map(|n| n.parse().unwrap())
-        .collect();
-    let entry: Vec<u32> = data[2].split(' ')
+
+    let winning: Vec<u32> = data[1].split_whitespace()
         .filter(|s| !s.is_empty())
         .map(|n| n.parse().unwrap())
         .collect();
 
-    Card {
-        winning_nums: winning,
-        entry,
-    }
+    let matching_nums: Vec<u32> = data[2].split_whitespace()
+        .filter(|s| !s.is_empty())
+        .map(|n| n.parse().unwrap())
+        .filter(|n| winning.contains(n))
+        .collect();
+
+    Card { matches: matching_nums.len() as u32, count: 1 }
 }
 
-fn winning_score_for_cards(input: &str) -> u32 {
-    let mut sum = 0;
+fn total_scratchcards(input: &str) -> u32 {
+    // build hand of cards
+    let mut cards: Vec<Card> = Vec::new();
     for s in input.lines() {
         let card = parse_card(s);
-        let matching_nums: Vec<_> = card.entry.iter()
-            .filter(|c| card.winning_nums.contains(c))
-            .collect();
-        if !matching_nums.is_empty() {
-            sum += 2u32.pow(matching_nums.len() as u32 - 1)
+        cards.push(card);
+    }
+
+    // apply scratch card rules one by one
+    for i in 0..cards.len() {
+        let current_copies = cards[i].count;
+        let card_id = (i + 1) as u32;
+        let matches = cards[i].matches;
+        for j in card_id + 1..card_id + 1 + matches {
+            let card = cards.get_mut(j as usize - 1).unwrap();
+            card.count += current_copies;
         }
     }
 
-    sum
+    cards.iter().map(|c| c.count).sum()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::winning_score_for_cards;
+    use crate::total_scratchcards;
 
     #[test]
     fn test_input_file_1() {
         let input_data = include_str!("testinput.txt");
-        assert_eq!(winning_score_for_cards(input_data), 13u32);
+        assert_eq!(total_scratchcards(input_data), 303u32);
     }
 }
