@@ -1,5 +1,5 @@
 fn main() {
-    let input = include_str!("../input/day5.txt");
+    let input = include_str!("../input/day6.txt");
     advent_of_code_2023::solve_puzzles(input, part1, part2);
 }
 
@@ -18,13 +18,13 @@ mod tests {
 
     #[test]
     fn test_part_1_input() {
-        let input_data = include_str!("../example/day5.txt");
+        let input_data = include_str!("../example/day6.txt");
         assert_eq!(part1(input_data), ?);
     }
 
     #[test]
     fn test_part_2_input() {
-        let input_data = include_str!("../example/day5.txt");
+        let input_data = include_str!("../example/day6.txt");
         assert_eq!(part1(input_data), ?);
     }
 }

@@ -9,8 +9,8 @@ const ANSI_RESET: &str = "\x1b[0m";
 pub fn solve_puzzles<T1: Display + Debug, T2: Display + Debug>(
     input: &str,
     part1: impl FnOnce(&str) -> T1,
-    part2: impl FnOnce(&str) -> T2,
-) {
+    part2: impl FnOnce(&str) -> T2 )
+{
     let timer = Instant::now();
     let pt1_result = part1(input);
     let time = timer.elapsed();

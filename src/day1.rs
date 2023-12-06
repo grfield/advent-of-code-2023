@@ -58,8 +58,7 @@ fn number_from_first_and_last_digit(line: &str, include_words: bool) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::number_from_first_and_last_digit;
-    use crate::calculate_sum_from_codes;
+    use crate::*;
 
     #[test]
     fn only_two_digits_in_str() {
