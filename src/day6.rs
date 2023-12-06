@@ -15,31 +15,30 @@ fn get_numbers(prefix: &str, line: &str) -> Vec<u64> {
         .collect::<Vec<u64>>()
 }
 
+/**
+ * Calculate by finding the roots of the function one more than the record
+ */
 fn calculate_wins(races: Vec<(&u64, &u64)>) -> u64 {
-    let mut wins: Vec<u64> = vec![];
-    for (t, d) in races {
+    races.iter().map(|(t, d)| {
+        // x = t^2 - 4 * d
+        let x = BigDecimal::from(*t)
+            .square()
+            .sub(BigDecimal::from(4)
+            .mul(BigDecimal::from(*d + 1)));
+        let sqrt_x = x.sqrt().unwrap();
 
-       // x = t^2 - 4 * d
-       let x = BigDecimal::from(t)
-           .square()
-           .sub(BigDecimal::from(4)
-           .mul(BigDecimal::from(d + 1)));
-       let sqrt_x = x.sqrt().unwrap();
+        // lower = (t - sqrt(x)) / 2
+        let lower = BigDecimal::from(*t)
+            .sub(&sqrt_x)
+            .div(BigDecimal::from(2))
+            .with_scale_round(0, RoundingMode::Ceiling);
 
-       // lower = (t - sqrt(x)) / 2
-       let lower = BigDecimal::from(t)
-           .sub(&sqrt_x)
-           .div(BigDecimal::from(2))
-           .with_scale_round(0, RoundingMode::Ceiling);
+        // upper = (t + sqrt(x)) / 2 - 1
+        let upper = BigDecimal::from(*t).add(&sqrt_x).div(BigDecimal::from(2))
+            .with_scale_round(0, RoundingMode::Floor);
 
-       // upper = (t + sqrt(x)) / 2 - 1
-       let upper = BigDecimal::from(t).add(&sqrt_x).div(BigDecimal::from(2))
-           .with_scale_round(0, RoundingMode::Floor);
-
-        wins.push(upper.to_u64().unwrap() - lower.to_u64().unwrap() + 1);
-    }
-
-    wins.iter().product::<u64>()
+        upper.to_u64().unwrap() - lower.to_u64().unwrap() + 1
+    }).product::<u64>()
 }
 
 fn part1(input: &str) -> u64 {
