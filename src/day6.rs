@@ -56,22 +56,16 @@ fn part2(input: &str) -> u64 {
     let lines = input.lines().collect::<Vec<&str>>();
 
     let time = lines[0]
-        .strip_prefix("Time: ")
-        .unwrap()
-        .chars()
+        .strip_prefix("Time: ").unwrap().chars()
         .filter(|c| !c.is_whitespace())
         .collect::<String>()
-        .parse::<u64>()
-        .unwrap();
+        .parse::<u64>().unwrap();
 
     let distance = lines[1]
-        .strip_prefix("Distance: ")
-        .unwrap()
-        .chars()
+        .strip_prefix("Distance: ").unwrap().chars()
         .filter(|c| !c.is_whitespace())
         .collect::<String>()
-        .parse::<u64>()
-        .unwrap();
+        .parse::<u64>().unwrap();
 
     let races = vec![(&time, &distance)];
 
