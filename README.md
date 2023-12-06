@@ -13,7 +13,7 @@ My solutions to Advent of Code 2023 in Rust when it all kicks off on December 1
 | 4b  | ✅     | 273.44µs |
 | 5a  | ❌     |          |
 | 5b  | ❌     |          |
-| 6a  | ✅     | 9.37ms   |
-| 6b  | ✅     | 2.18ms   |
+| 6a  | ✅     | 5.98µs   |
+| 6b  | ✅     | 3.20µs   |
 
 Credit: Rust project structure based on that used by Thomas Kendrick (https://github.com/thomaskendrick/aoc_2023/tree/main) 

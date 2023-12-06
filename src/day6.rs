@@ -1,6 +1,3 @@
-use std::ops::{Add, Div, Mul, Sub};
-use bigdecimal::{BigDecimal, RoundingMode, ToPrimitive};
-
 fn main() {
     let input = include_str!("../input/day6.txt");
     advent_of_code_2023::solve_puzzles(input, part1, part2);
@@ -21,23 +18,16 @@ fn get_numbers(prefix: &str, line: &str) -> Vec<u64> {
 fn calculate_wins(races: Vec<(&u64, &u64)>) -> u64 {
     races.iter().map(|(t, d)| {
         // x = t^2 - 4 * d
-        let x = BigDecimal::from(*t)
-            .square()
-            .sub(BigDecimal::from(4)
-            .mul(BigDecimal::from(*d + 1)));
-        let sqrt_x = x.sqrt().unwrap();
+        let x = (t.pow(2) - (4 * (*d + 1))) as f64;
+        let sqrt_x = x.sqrt();
 
         // lower = (t - sqrt(x)) / 2
-        let lower = BigDecimal::from(*t)
-            .sub(&sqrt_x)
-            .div(BigDecimal::from(2))
-            .with_scale_round(0, RoundingMode::Ceiling);
+        let lower = (((**t as f64) - sqrt_x) / 2f64).ceil();
 
         // upper = (t + sqrt(x)) / 2 - 1
-        let upper = BigDecimal::from(*t).add(&sqrt_x).div(BigDecimal::from(2))
-            .with_scale_round(0, RoundingMode::Floor);
+        let upper = (((**t as f64) + sqrt_x) / 2f64).floor();
 
-        upper.to_u64().unwrap() - lower.to_u64().unwrap() + 1
+        (upper as u64) - (lower as u64) + 1
     }).product::<u64>()
 }
 
