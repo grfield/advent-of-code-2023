@@ -25,6 +25,6 @@ mod tests {
     #[test]
     fn test_part_2_input() {
         let input_data = include_str!("../example/day?.txt");
-        assert_eq!(part1(input_data), ?);
+        assert_eq!(part2(input_data), ?);
     }
 }
