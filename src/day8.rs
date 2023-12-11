@@ -56,10 +56,9 @@ fn gcd(a: u64, b: u64) -> u64 {
     gcd(b, a % b)
 }
 
-fn part1(input: &str) -> u32 {
-    let (route, map) = parse_route_and_map(input);
-
-    let mut node = "AAA";
+fn calculate_steps(route: &Vec<char>, map: &MapType, start: &str ) -> u32 {
+    let starting_node = start.to_string();
+    let mut node = starting_node.as_str();
     let mut counter = 0;
     let mut steps = 0;
     while !node.ends_with('Z') {
@@ -71,6 +70,11 @@ fn part1(input: &str) -> u32 {
     steps
 }
 
+fn part1(input: &str) -> u32 {
+    let (route, map) = parse_route_and_map(input);
+    calculate_steps(&route, &map, "AAA")
+}
+
 fn part2(input: &str) -> u64 {
     let (route, map) = parse_route_and_map(input);
 
@@ -80,16 +84,7 @@ fn part2(input: &str) -> u64 {
         .collect::<Vec<&str>>();
     let mut ghost_steps: Vec<u64> = Vec::new();
     for n in nodes {
-        let mut node = n;
-        let mut counter = 0;
-        let mut steps = 0;
-        while !node.ends_with('Z') {
-            node = next_node_location(&route[counter], &map, node);
-            counter = (counter + 1) % route.len();
-            steps += 1;
-        }
-
-        ghost_steps.push(steps);
+        ghost_steps.push(calculate_steps(&route, &map, n) as u64);
     }
 
     let boxed: Box<[u64]> = ghost_steps.into_boxed_slice();
