@@ -7,10 +7,14 @@ fn main() {
     advent_of_code_2023::solve_puzzles(input, part1, part2);
 }
 
-fn part1(input: &str) -> u32 {
-    let games = input.lines()
+fn parse_games(input: &str) -> Vec<Vec<&str>> {
+    input.lines()
         .map(|s| { s. split(&[':', ';']).collect::<Vec<_>>() })
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
+
+fn part1(input: &str) -> u32 {
+    let games = parse_games(input);
 
     let mut possible_game_id_total: u32 = 0;
     for game in games {
@@ -21,13 +25,15 @@ fn part1(input: &str) -> u32 {
             let balls = game[draw_idx].split(',').collect::<Vec<_>>();
             for draw in balls {
                 let colour_balls = draw.split_ascii_whitespace().collect::<Vec<_>>();
-                if colour_balls[1] == "red" && colour_balls[0].parse::<u32>().unwrap() > RED_COUNT {
+                let ball_colour = colour_balls[1];
+                let ball_count = colour_balls[0].parse::<u32>().unwrap();
+                if ball_colour == "red" && ball_count > RED_COUNT {
                     game_possible = false;
                 }
-                if colour_balls[1] == "green" && colour_balls[0].parse::<u32>().unwrap() > GREEN_COUNT {
+                if ball_colour == "green" && ball_count > GREEN_COUNT {
                     game_possible = false;
                 }
-                if colour_balls[1] == "blue" && colour_balls[0].parse::<u32>().unwrap() > BLUE_COUNT {
+                if ball_colour == "blue" && ball_count > BLUE_COUNT {
                     game_possible = false;
                 }
             }
@@ -38,8 +44,37 @@ fn part1(input: &str) -> u32 {
     possible_game_id_total
 }
 
-fn part2(_input: &str) -> u32 {
-    0
+fn part2(input: &str) -> u32 {
+    let games = parse_games(input);
+
+    let mut sum = 0u32;
+    for game in games {
+        let mut ball_power = 0u32;
+        let mut max_red = 0u32;
+        let mut max_green = 0u32;
+        let mut max_blue = 0u32;
+        for draw_idx in 1..game.len() {
+            let balls = game[draw_idx].split(',').collect::<Vec<_>>();
+            for draw in balls {
+                let colour_balls = draw.split_ascii_whitespace().collect::<Vec<_>>();
+                let ball_colour = colour_balls[1];
+                let ball_count = colour_balls[0].parse::<u32>().unwrap();
+                if ball_colour == "red" && ball_count > max_red {
+                    max_red = ball_count;
+                }
+                if ball_colour == "green" && ball_count > max_green {
+                    max_green = ball_count;
+                }
+                if ball_colour == "blue" && ball_count > max_blue {
+                    max_blue = ball_count;
+                }
+            }
+            ball_power = max_red * max_green * max_blue;
+        }
+        sum += ball_power;
+    }
+
+    sum
 }
 
 
